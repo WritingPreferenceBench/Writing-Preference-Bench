@@ -16,7 +16,7 @@ This repository contains the dataset, evaluation materials, and documentation fo
 ## 🔔 Introduction
 
 <p align="center">
-  <img src="images/DataCuration.png" alt="WritingPreferenceBench Overview" style="width: 800px;"> 
+  <img src="images/WPB_main.png" alt="WritingPreferenceBench Overview" style="width: 800px;"> 
 </p>
 
 **WritingPreferenceBench** is a cross-lingual benchmark for evaluating language models’ ability to recognize **subjective writing quality**—including creativity, stylistic sophistication, and emotional resonance—while neutralizing objective signals such as grammar, factuality, and length.  
