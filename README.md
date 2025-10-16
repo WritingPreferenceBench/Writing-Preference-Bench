@@ -137,22 +137,6 @@ This structure enables consistent evaluation across **reward models**, **LLM jud
 
 ---
 
-## 🔬 Evaluation Scripts (Optional)
-
-If you wish to reproduce evaluation results, you can use the provided scripts:
-
-```bash
-# Reward model evaluation
-python eval/eval_reward_model.py --input_dir data/pairs --model_name RM-R1-Qwen2.5-7B --output_dir results
-
-# LLM-as-judge evaluation
-python eval/eval_llm_judge.py --input_dir data/pairs --model_name Gemini-2.5-Pro --output_dir results
-```
-
-Outputs include accuracy metrics and per-genre performance breakdowns.
-
----
-
 ## 📜 License
 
 **WritingPreferenceBench** is distributed under the **[Open Data Commons Attribution License (ODC-BY)](https://opendatacommons.org/licenses/by/)**.  
