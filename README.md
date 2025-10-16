@@ -146,18 +146,4 @@ You are required to:
 - Provide proper attribution to the authors.  
 - Respect the licenses of any referenced data included within derivative works.  
 
----
 
-## 📚 Citation
-
-**BibTeX:**
-```bibtex
-@misc{zhang2025writingpreferencebench,
-      title={WritingPreferenceBench: Evaluating Subjective Writing Preferences Across Cultures},
-      author={Ge Zhang and Shuangshuang Ying and Yunwen Li and Xingwei Qu and Xin Li and Sheng Jin and Minghao Liu and Zhoufutu Wen and Xeron Du and Tianyu Zheng and Yichi Zhang and Letian Ni and Yuyang Cheng and Qiguang Chen and Jingzhe Ding and Shengda Long and Wangchunshu Zhou and Jiazhan Feng and Wanjun Zhong and Libo Qin and Wenhao Huang and Wanxiang Che and Chenghua Lin},
-      year={2025},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={}
-}
-```
