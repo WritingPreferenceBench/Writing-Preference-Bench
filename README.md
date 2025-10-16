@@ -2,6 +2,12 @@
   <i>WritingPreferenceBench</i>: Evaluating Subjective Writing Preferences Across Cultures
 </h2>
 
+<p align="center">
+  <a href="https://WritingPreferenceBench.github.io/" style="margin: 0 10px;">🌐 Homepage</a> |
+  <a href="https://huggingface.co/datasets/m-a-p/WritingPreferenceBench" style="margin: 0 10px;">🤗 Dataset</a> |
+  <a href="" style="margin: 0 10px;">📖 ArXiv</a> |
+  <a href="https://github.com/m-a-p/WritingPreferenceBench" style="margin: 0 10px;">🐙 GitHub</a>
+</p>
 
 This repository contains the dataset, evaluation materials, and documentation for the paper "[WritingPreferenceBench: Evaluating Subjective Writing Preferences Across Cultures]()".
 
@@ -129,6 +135,7 @@ This structure enables consistent evaluation across **reward models**, **LLM jud
 | Claude-4-Opus-thinking | 61.0 | 56.0 | 58.5 |
 | OpenAI-o3-high | 48.1 | 42.0 | 45.1 |
 
+
 ---
 
 ## 📜 License
@@ -140,4 +147,18 @@ You are required to:
 - Provide proper attribution to the authors.  
 - Respect the licenses of any referenced data included within derivative works.  
 
+---
 
+## 📚 Citation
+
+**BibTeX:**
+```bibtex
+@misc{zhang2025writingpreferencebench,
+      title={WritingPreferenceBench: Evaluating Subjective Writing Preferences Across Cultures},
+      author={Ge Zhang and Shuangshuang Ying and Yunwen Li and Xingwei Qu and Xin Li and Sheng Jin and Minghao Liu and Zhoufutu Wen and Xeron Du and Tianyu Zheng and Yichi Zhang and Letian Ni and Yuyang Cheng and Qiguang Chen and Jingzhe Ding and Shengda Long and Wangchunshu Zhou and Jiazhan Feng and Wanjun Zhong and Libo Qin and Wenhao Huang and Wanxiang Che and Chenghua Lin},
+      year={2025},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={}
+}
+```
