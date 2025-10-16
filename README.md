@@ -9,41 +9,40 @@
   <a href="https://github.com/m-a-p/WritingPreferenceBench" style="margin: 0 10px;">🐙 GitHub</a>
 </p>
 
-This repository contains the dataset, evaluation scripts, and benchmark setup for the paper "[WritingPreferenceBench: Evaluating Subjective Writing Preferences Across Cultures]()".
+This repository contains the dataset, evaluation materials, and documentation for the paper "[WritingPreferenceBench: Evaluating Subjective Writing Preferences Across Cultures]()".
 
 ---
 
 ## 🔔 Introduction
 
 <p align="center">
-  <img src="images/WPB_main.png" alt="WritingPreferenceBench Overview" style="width: 800px;"> 
+  <img src="images/DataCuration.png" alt="WritingPreferenceBench Overview" style="width: 800px;"> 
 </p>
 
-**WritingPreferenceBench** is a cross-lingual benchmark designed to evaluate language models’ ability to recognize **subjective writing quality**—including creativity, stylistic sophistication, and emotional resonance—while neutralizing objective quality signals such as grammar, factuality, and length.  
-It consists of **1,800 human-validated preference pairs** (1,200 English and 600 Chinese) across **8 creative writing genres** and **51 subcategories**, where each pair contrasts two grammatically correct, factually accurate, and length-matched responses.  
+**WritingPreferenceBench** is a cross-lingual benchmark for evaluating language models’ ability to recognize **subjective writing quality**—including creativity, stylistic sophistication, and emotional resonance—while neutralizing objective signals such as grammar, factuality, and length.  
+It contains **1,800 human-validated preference pairs** (1,200 English and 600 Chinese) across **8 creative writing genres** and **51 fine-grained categories**, where both responses are grammatically correct, factually accurate, and length-matched.
 
-Our findings reveal that standard **sequence-based reward models (SC-RM)** perform near random (52.7% accuracy), while **generative reward models (GenRM)** that produce explicit reasoning chains achieve up to **81.8% accuracy**. This highlights the critical need for **reasoning-based architectures** in modeling subjective human preferences.  
-
-The dataset enables rigorous, reproducible evaluation of subjective writing quality and provides a foundation for next-generation **preference learning** and **RLHF** research.
+Empirical results show that standard **sequence-based reward models (SC-RM)** achieve only **52.7% mean accuracy**, while **generative reward models (GenRM)** that output reasoning chains reach **81.8%**.  
+These findings demonstrate that **subjective preference modeling** requires structured reasoning rather than direct classification.
 
 ---
 
 ## 🧩 Benchmark Overview
 
-WritingPreferenceBench introduces a **three-stage human-in-the-loop data curation pipeline**, combining expert creative writing design, large-scale model generation, and rigorous human evaluation.
+WritingPreferenceBench adopts a **human-in-the-loop** data construction pipeline to isolate genuine subjective preferences:
 
 1. **Query Design:**  
-   - 51 creative writing categories (8 macro domains).  
-   - Authored by professional writing instructors with iterative expert review.  
+   - 51 writing categories organized into 8 macro domains.  
+   - Authored and validated by professional creative writing instructors in both English and Chinese.  
 
 2. **Response Generation:**  
-   - 20 state-of-the-art models (e.g., GPT-4.1, Claude-4, Gemini-2.5-Pro, Doubao-1.5-Pro).  
-   - 5 temperature-sampled responses per query (T = 0.8).  
+   - 20 state-of-the-art language models (e.g., GPT-4.1, Claude-4, Gemini-2.5-Pro, Doubao-1.5-Pro).  
+   - 5 temperature-sampled outputs per query (T = 0.8).  
 
 3. **Human Evaluation:**  
-   - 11 expert annotators, 4 English and 7 Chinese professionals.  
-   - 4-point quality scale (0–3) capturing creativity, style, and engagement.  
-   - Only pairs with ≥2/3 annotator agreement and Δscore ≥1 were retained.
+   - 11 expert annotators trained with an 8-hour rubric calibration.  
+   - 4-point creative writing scale (0–3).  
+   - Pairs retained only when ≥2 of 3 annotators agreed and Δscore ≥ 1.
 
 ---
 
@@ -54,22 +53,67 @@ WritingPreferenceBench introduces a **three-stage human-in-the-loop data curatio
 | English   | 1,200   | 51           | 1.31           | 1,450.3              | 839.9                  |
 | Chinese   | 600     | 51           | 1.45           | 1,873.5              | 1,458.3                |
 
-**Macro Categories:** Fiction · Non-Fiction · Functional Documents · Promotional & Communication · Funny · Poetry · Scriptwriting · Role-Playing
+**Macro Domains:** Fiction · Non-Fiction · Functional Documents · Promotional & Communication · Funny · Poetry · Scriptwriting · Role-Playing
+
+---
+
+## 📦 Dataset Format
+
+Each example in WritingPreferenceBench follows the structure below:
+
+```json
+{
+  "prompt": "写一个抽象文学，你的角色是一个程序员，表达程序员上班、改代码到想发疯的口号，可以用一些Emoji表情。字数不用太长，越不符合现实逻辑越好。要突出自己已经上班了16个小时这一点。",
+  "prompt_id": "ff1c392f-b49a-4748-a34d-2d7edcb3e4ee",
+  "tag": "抽象文学-亚文化",
+  "chosen": {
+    "response": "16小时代码雨 ☔️☠️，键盘敲出灵魂斑驳🌪️。...",
+    "score": 2,
+    "model": "OpenAI-gpt4.1-mini",
+    "completion_tokens": 159,
+    "prompt_tokens": 70,
+    "word_len": 133
+  },
+  "rejected": {
+    "response": "# 《二进制的挽歌》 ...",
+    "score": 1,
+    "model": "Claude-4-Sonnet-nothinking",
+    "completion_tokens": 420,
+    "prompt_tokens": 96,
+    "word_len": 245
+  }
+}
+```
+
+**Field Descriptions:**
+- `prompt`: The writing instruction or creative query presented to the model.  
+- `prompt_id`: A unique UUID identifier for the query.  
+- `tag`: The fine-grained writing genre (e.g., “诗歌-现代”, “抽象文学-亚文化”).  
+- `chosen` / `rejected`: Two model responses compared under human annotation.  
+  - `response`: The raw generated text.  
+  - `score`: Human-assigned quality score (0–3).  
+  - `model`: The source model that produced the response.  
+  - `completion_tokens`, `prompt_tokens`: Token usage statistics for reproducibility.  
+  - `word_len`: Character or word length of the response.  
+
+Each JSON object represents one **human preference pair**, where `chosen` has higher subjective quality than `rejected` according to expert annotation.
 
 ---
 
 ## 🧠 Evaluation Protocol
 
-Two standardized evaluation protocols are supported:
+Two evaluation settings are supported:
 
 1. **Reward Model Scoring**  
-   Reward models assign scalar scores for each response pair `(R_chosen, R_rejected)`.  
-   A prediction is correct if `RM(R_chosen) > RM(R_rejected)`.
+   Models output scalar scores for each response. Accuracy is computed as:  
+   \[
+   Acc = \frac{1}{N} \sum_{i=1}^N \mathbf{1}\,[RM(R_{chosen}) > RM(R_{rejected})].
+   \]
 
-2. **Pairwise Preference Judgment**  
-   LLM judges compare two responses and select the preferred one based on creativity, stylistic flair, and emotional resonance.  
+2. **LLM-as-Judge Evaluation**  
+   LLMs are prompted with both responses and asked to select the preferred one based on creativity, emotional resonance, and stylistic flair.
 
-Both modes can be reproduced using our public evaluation scripts in this repository.
+This structure enables consistent evaluation across **reward models**, **LLM judges**, and **cross-lingual experiments**.
 
 ---
 
@@ -91,29 +135,13 @@ Both modes can be reproduced using our public evaluation scripts in this reposit
 | Claude-4-Opus-thinking | 61.0 | 56.0 | 58.5 |
 | OpenAI-o3-high | 48.1 | 42.0 | 45.1 |
 
-These results confirm that **generative reasoning architectures** substantially outperform sequence-based classifiers and zero-shot LLM judges in capturing human subjective preferences.
-
 ---
 
-## ⚙️ Installation
+## 🔬 Evaluation Scripts (Optional)
 
-To install the required packages, run:
-
-```bash
-git clone git@github.com:m-a-p/WritingPreferenceBench.git
-cd ./WritingPreferenceBench
-pip install -r requirements.txt
-```
-
----
-
-## 🧾 Usage Example
-
-To evaluate model predictions using WritingPreferenceBench:
+If you wish to reproduce evaluation results, you can use the provided scripts:
 
 ```bash
-export PYTHONPATH=$(pwd)
-
 # Reward model evaluation
 python eval/eval_reward_model.py --input_dir data/pairs --model_name RM-R1-Qwen2.5-7B --output_dir results
 
@@ -121,23 +149,18 @@ python eval/eval_reward_model.py --input_dir data/pairs --model_name RM-R1-Qwen2
 python eval/eval_llm_judge.py --input_dir data/pairs --model_name Gemini-2.5-Pro --output_dir results
 ```
 
-All scripts automatically compute accuracy based on human-annotated preference pairs.
-
-📝 **Notes**
-- The dataset and evaluation templates are standardized for both English and Chinese subsets.
-- Please ensure consistent random seeds when reproducing experiments.
-- Default outputs include `.jsonl` results and accuracy summaries in `.csv` format.
+Outputs include accuracy metrics and per-genre performance breakdowns.
 
 ---
 
 ## 📜 License
 
-**WritingPreferenceBench** is released under the **[Open Data Commons Attribution License (ODC-BY)](https://opendatacommons.org/licenses/by/)**.  
-The dataset and accompanying scripts are freely available for research and educational use.  
+**WritingPreferenceBench** is distributed under the **[Open Data Commons Attribution License (ODC-BY)](https://opendatacommons.org/licenses/by/)**.  
+The dataset and documentation are released for research and educational use.  
 
 You are required to:
-- Give proper attribution to the original authors.  
-- Comply with the licenses of any referenced datasets included in derived works.  
+- Provide proper attribution to the authors.  
+- Respect the licenses of any referenced data included within derivative works.  
 
 ---
 
