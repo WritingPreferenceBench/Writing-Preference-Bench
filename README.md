@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://WritingPreferenceBench.github.io/" style="margin: 0 10px;">🌐 Homepage</a> |
   <a href="https://huggingface.co/datasets/m-a-p/Writing-Preference-Bench" style="margin: 0 10px;">🤗 Dataset</a> |
-  <a href="" style="margin: 0 10px;">📖 ArXiv</a> |
+  <a href="https://arxiv.org/abs/2510.14616" style="margin: 0 10px;">📖 ArXiv</a> |
   <a href="https://github.com/m-a-p/WritingPreferenceBench" style="margin: 0 10px;">🐙 GitHub</a>
 </p>
 
@@ -159,6 +159,6 @@ You are required to:
       year={2025},
       archivePrefix={arXiv},
       primaryClass={cs.CL},
-      url={}
+      url={https://arxiv.org/abs/2510.14616}
 }
 ```
